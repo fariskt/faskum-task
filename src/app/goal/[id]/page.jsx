@@ -1,36 +1,33 @@
 "use client";
 
-import axios from "axios";
+import { getGoalById } from "../../../services/goalService";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
   const { id } = useParams();
   const [goal, setGoal] = useState(null);
-  const token = localStorage.getItem("token");
+  const [isLoading, setIsloadig] = useState(false);
 
+  
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchSingleGoal = async () => {
+      setIsloadig(true)
       try {
-        const response = await axios.get(
-          `https://goal-tracker-api.onrender.com/api/v1/goals/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setGoal(response.data.goal);
-        return response.data;
+        const response = await getGoalById(id, token)
+        setIsloadig(false)
+        setGoal(response.goal);
       } catch (error) {
         console.log(error);
+        setIsloadig(false)
       }
     };
     fetchSingleGoal();
   },[]);
 
-  if (!goal) {
-    return <div>No goal found</div>;
+  if (isLoading) {
+    return <div className="bg-amber-300 min-h-screen text-center flex items-center justify-center">loading...</div>;
   }
   return (
     <div className="flex flex-col items-center bg-amber-300 min-h-screen justify-center">

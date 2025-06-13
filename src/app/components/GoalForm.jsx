@@ -2,9 +2,8 @@ import React from "react";
 
 const GoalForm = ({ submitGoal, goalData, handleChanage,setShowForm }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm bg-opacity-50 z-50">
-      <div className="bg-amber-50 p-6 rounded-xl shadow-lg w-full max-w-md">
-        <button className="absolute text-sm cursor-pointer font-bold text-gray-600" onClick={()=> setShowForm(false)}>Close</button>
+    <div onClick={()=> setShowForm(false)} className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm bg-opacity-50 z-50" >
+      <div className="bg-amber-50 p-6 rounded-xl shadow-lg w-full max-w-md" onClick={(e)=>e.stopPropagation()}>
         <h2 className="my-4 text-center text-xl">Set goal</h2>
         <form onSubmit={submitGoal}>
           <label htmlFor="title" className="block mb-1 font-medium">

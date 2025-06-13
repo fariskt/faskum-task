@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import { registerUser } from "@/services/authService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -23,15 +23,10 @@ const page = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "https://goal-tracker-api.onrender.com/api/v1/auth/register",
-        formData
-      );
-      console.log(res.data);
-      if(res.data){
+      const res = await registerUser(formData)
+      if(res){
         router.push("/login")
       }
-      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +34,7 @@ const page = () => {
 
   return (
     <div className="bg-amber-300 min-h-screen flex justify-center flex-col items-center">
-      <h1>Register</h1>
+      <h1 className="mb-5 text-2xl">Register</h1>
       <form onSubmit={handleRegister} className="flex flex-col space-y-2">
         <label htmlFor="name">Name</label>
         <input

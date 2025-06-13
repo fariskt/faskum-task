@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import { loginUser } from "@/services/authService";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -22,16 +22,12 @@ const page = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "https://goal-tracker-api.onrender.com/api/v1/auth/login",
-        formData
-      );
-      if (res.data) {
-        router.push("/");
+      const res = await loginUser(formData)
+      if (res?.token) {
         localStorage.setItem("token", res.data.token)
+        router.push("/");
         alert("Login succedd")
       }
-      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +35,7 @@ const page = () => {
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-amber-300">
-      <h1>Login</h1>
+      <h1 className="mb-5 text-2xl">Login</h1>
       <form onSubmit={handleRegister} className="flex flex-col">
         <label htmlFor="Email">Email</label>
         <input
@@ -59,7 +55,7 @@ const page = () => {
           value={formData.password}
           onChange={hanldeChange}
         />
-        <button className="mt-4 bg-white rounded-md p-2" type="submit">Submit</button>
+        <button className="cursor-pointer mt-4 bg-white rounded-md p-2" type="submit">Submit</button>
         <br />
         <h5>
           Dont have an account, <Link href="/register">Register</Link>
